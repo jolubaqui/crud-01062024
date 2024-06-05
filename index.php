@@ -1,4 +1,5 @@
 <?php
+// Incluir archivos de configuración y autoload
 require_once "./config/app.php";
 require_once "./autoload.php";
 require_once "./app/views/inc/session_start.php";
@@ -9,6 +10,7 @@ if (isset($_GET['views'])) {
     $url = ['login'];
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -17,8 +19,21 @@ if (isset($_GET['views'])) {
 </head>
 
 <body>
+    <?php
 
-    <?php require_once "./app/views/inc/script.php"; ?>
+    use app\controllers\viewsController;
+
+    $views = new viewsController();
+
+    $vista = $views->obtenerVistasControlador($url[0]);
+    if ($vista == "login" || $vista == "404") {
+        require_once "./app/views/content/" . $vista . "-view.php";
+    } else {
+        require_once $vista;
+    }
+
+    require_once "./app/views/inc/script.php";
+    ?>
 </body>
 
 </html>
